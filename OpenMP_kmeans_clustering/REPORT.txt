@@ -1,0 +1,128 @@
++------------------------+
+|Parallelization Strategy|
++------------------------+
+
+Note: All lines refer to the initial code (seq_kmeans_orig.c)
+
+In order to find the first loop which we would parallelize we run a hotspot
+analysis on Vtune Profiler and found that the loop inside the euclid_dist_2 
+function takes up most of the cpu execution time. Our first attempt was to use
+the omp parallel for directive there but soon we realised that the overhead of
+entering a parallel region is way too high so eventually we moved the parallel
+region in the outermost loop of seq_kmeans (the do while loop, line 100) so that
+we enter the parallel region once. 
+
+Note: We also tried placing the parallel region inside the do while loop (above
+the for loop in line 102) and even though we expected a significant loss in
+performance due to repetitive thread creation, we got similar results to our
+final implementation, probably because the compiler used a thread pool to reuse
+threads. This implementation even had marginally better performance (around
+0.01s less time) running on mars with 8 threads than our final implementation 
+but we decided to not implement it this way, for 2 reasons.
+
+Firstly, this solution is dependent on compiler optimazations and if the
+compiler doesn't use a thread pool there will be a significant drop in
+performance.
+
+Second, although this implementation had slightly better results on mars, that
+was not the case with artemis where we could barely notice any difference in
+performance across all experiments and our final implementation had the lead
+this time even if it was marginal.
+
+We then found that using the omp for directive in the loop that iterates all the 
+objects (line 102) yields the bests performance compared to using this directive
+on the inner loops of find_nearest_cluster (lines 58, 38) because it has the
+largest number of iterations and includes more lines of code than the other
+loops meaning more workload for each thread.
+
+Additionaly we parallelized the calculation of the new cluster center (line 120)
+although it didn't result in a significant performance boost using the nowait
+directive as there were no data dependencies after the loop.
+
+We decided to move the initialization of the delta to the end in order to avoid
+an implicit barrier that we placed in the beginning of the do while loop (line 
+100) using a new variable for the check (delta_check).
+
+We then noticed that unrolling the loops (lines 58, 38) resulted in a boost in
+performance for almost all cases from 1 to 64 threads, with the biggest being
+that of the sequential code however this unroll may yield different results for
+different datasets.
+
+Initially the newClusterSize and newClusters arrays where shared between all 
+threads and each thread had exclusive access to update their indexes with the
+omp atomicdirective. However in order to remove the overhead of omp atomic (even
+if insignificant) we performed reduction on these arrays as we did with the 
+delta variable. A new pointer (local_cluster) was initialized to point on the
+memory which contains all the cluster centers, in order to give a 1d array of
+contiguous memory to the reduction directive.
+
+Finally we tried different scheduling policies and guided had a lead on all
+cases compared to static, while having similar results to dynamic, which seems
+to indicate that some iterations take longer to complete than others resulting
+in load imbalances.
+
++--------------------+
+|Experimental Results|
++--------------------+
+
+Experiment Parameters
+---------------------
+clusters: 2000
+threshhold: 0.001
+input_file: texture17695.bin
+flags: -O2 (had generally the best performance among experiments)
+---------------------
+
+Original Code mean: 5.924
+Parallel Code (1 thread) mean: 4.935
+
+(Not included in excel just for reference):
+Parallel Code (1 thread without unrolling) mean: 6.1
+
+The original sequential code is ~1 slower compared to the final(parallelized)
+code running on 1 thread, due to the unrolling which helped the performance of 
+sequential execution (if we remove the unrolling then the parallel code is ~0.2
+secs slower that the original code due to the overhead of openmp).
+
+
+Parallel Code (4 threads) mean: 1.266
+
+The parallel code running on 4 threads has 3.89 times the performance compared
+to the parallel code running on 1 thread.
+
+Parallel Code (8 threads) mean: 0.734
+
+The parallel code running on 8 threads has 1.72 times the performance compared
+to the parallel code running on 4 threads. Note that the performance of this
+code running on artemis was significantly better than mars running on 8 cores
+(which was approximately 1.22 secs) probably because mars is a 4-way multicore
+machine using 2-way SMT(or hyperthreading) on each core so for 8 threads, 2 need
+to be assigned on each core and share its resources, while on artemis each 
+thread can have its own core.
+
+Parallel Code (16 threads) mean: 0.391
+
+The parallel code running on 16 threads has 1.86 times the performance compared
+to the parallel code running on 8 threads.
+
+Parallel Code (32 threads) mean: 0.219
+
+The parallel code running on 32 threads has 1.86 times the performance compared
+to the parallel code running on 16 threads and had the best performance across
+any number of threads.
+
+Parallel Code (64 threads) mean: 0.281
+
+The parallel code running on 64 threads doesn't show impovement in performance 
+and in fact is slower than the 32 thread execution. This could happen similarly
+because we make use of hyperthreading to reach 64-thread parallelization and as
+shown in the experiment with 8 threads we achieved worse performance using 
+hyperthereading than 8 actual cores, so this could be the case here. Scheduling
+may also not be optimal here but we didnt find any other combination of
+scheduling policy and chunk size that yielded any improvement.
+
+Note: All experiments reached ~95% effective cpu utilization on threading 
+analysis except from the 64 threaded one.
+
+Note: We included the results of the sequential code and a check_error.py
+to ensure they are correct by comparing them.

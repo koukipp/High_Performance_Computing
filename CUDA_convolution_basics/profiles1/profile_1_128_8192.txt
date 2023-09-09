@@ -1,0 +1,457 @@
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25735== NVPROF is profiling process 25735, command: ./a.out 128 8192
+==25735== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25735== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+808.804565
+==25735== Profiling application: ./a.out 128 8192
+==25735== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   46.10%  373.46ms         1  373.46ms  373.46ms  373.46ms  [CUDA memcpy DtoH]
+                   24.99%  202.46ms         1  202.46ms  202.46ms  202.46ms  convolutionColumnGPU(double*, double*, int)
+                   16.43%  133.12ms         1  133.12ms  133.12ms  133.12ms  convolutionRowGPU(double*, double*, int, int)
+                   12.10%  98.045ms         2  49.023ms  1.7280us  98.044ms  [CUDA memcpy HtoD]
+                    0.38%  3.0745ms         1  3.0745ms  3.0745ms  3.0745ms  [CUDA memset]
+      API calls:   66.17%  808.46ms         2  404.23ms  98.157ms  710.31ms  cudaMemcpy
+                   17.60%  215.07ms         3  71.691ms  2.1601ms  210.58ms  cudaMalloc
+                    8.28%  101.20ms         1  101.20ms  101.20ms  101.20ms  cudaDeviceReset
+                    7.66%  93.578ms         3  31.193ms  947.41us  47.709ms  cudaFree
+                    0.14%  1.6505ms         2  825.24us  817.77us  832.70us  cuDeviceTotalMem
+                    0.06%  746.47us       202  3.6950us     263ns  169.15us  cuDeviceGetAttribute
+                    0.03%  349.61us         1  349.61us  349.61us  349.61us  cudaGetDeviceProperties
+                    0.02%  205.86us         1  205.86us  205.86us  205.86us  cudaMemcpyToSymbol
+                    0.02%  191.92us         1  191.92us  191.92us  191.92us  cudaMemset
+                    0.01%  93.728us         2  46.864us  11.888us  81.840us  cudaLaunchKernel
+                    0.01%  77.439us         2  38.719us  32.827us  44.612us  cuDeviceGetName
+                    0.00%  50.569us         2  25.284us  1.4390us  49.130us  cudaEventCreate
+                    0.00%  25.692us         2  12.846us  7.1960us  18.496us  cudaEventRecord
+                    0.00%  17.398us         2  8.6990us  2.2420us  15.156us  cuDeviceGetPCIBusId
+                    0.00%  6.6030us         1  6.6030us  6.6030us  6.6030us  cudaEventSynchronize
+                    0.00%  4.5950us         1  4.5950us  4.5950us  4.5950us  cudaEventElapsedTime
+                    0.00%  3.1690us         3  1.0560us     516ns  1.8970us  cuDeviceGetCount
+                    0.00%  2.8450us         4     711ns     287ns  1.5050us  cuDeviceGet
+                    0.00%     903ns         2     451ns     444ns     459ns  cuDeviceGetUuid
+                    0.00%     485ns         1     485ns     485ns     485ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25754== NVPROF is profiling process 25754, command: ./a.out 128 8192
+==25754== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25754== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+816.455811
+==25754== Profiling application: ./a.out 128 8192
+==25754== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   48.09%  393.27ms         1  393.27ms  393.27ms  393.27ms  [CUDA memcpy DtoH]
+                   24.35%  199.08ms         1  199.08ms  199.08ms  199.08ms  convolutionColumnGPU(double*, double*, int)
+                   14.73%  120.45ms         1  120.45ms  120.45ms  120.45ms  convolutionRowGPU(double*, double*, int, int)
+                   12.45%  101.83ms         2  50.916ms  1.6320us  101.83ms  [CUDA memcpy HtoD]
+                    0.38%  3.0750ms         1  3.0750ms  3.0750ms  3.0750ms  [CUDA memset]
+      API calls:   67.24%  816.07ms         2  408.03ms  101.91ms  714.16ms  cudaMemcpy
+                   17.04%  206.84ms         3  68.946ms  1.3564ms  204.05ms  cudaMalloc
+                    7.86%  95.429ms         1  95.429ms  95.429ms  95.429ms  cudaDeviceReset
+                    7.59%  92.176ms         3  30.725ms  947.96us  47.003ms  cudaFree
+                    0.11%  1.3510ms         2  675.48us  672.73us  678.24us  cuDeviceTotalMem
+                    0.06%  677.47us       202  3.3530us     211ns  164.66us  cuDeviceGetAttribute
+                    0.03%  421.41us         1  421.41us  421.41us  421.41us  cudaGetDeviceProperties
+                    0.02%  224.24us         1  224.24us  224.24us  224.24us  cudaMemcpyToSymbol
+                    0.02%  192.22us         1  192.22us  192.22us  192.22us  cudaMemset
+                    0.01%  139.96us         2  69.981us  13.379us  126.58us  cudaLaunchKernel
+                    0.01%  86.962us         2  43.481us  15.832us  71.130us  cudaEventCreate
+                    0.01%  70.346us         2  35.173us  29.812us  40.534us  cuDeviceGetName
+                    0.00%  27.903us         2  13.951us  7.2420us  20.661us  cudaEventRecord
+                    0.00%  16.000us         2  8.0000us  3.7980us  12.202us  cuDeviceGetPCIBusId
+                    0.00%  13.485us         1  13.485us  13.485us  13.485us  cudaEventSynchronize
+                    0.00%  4.8810us         1  4.8810us  4.8810us  4.8810us  cudaEventElapsedTime
+                    0.00%  2.5500us         4     637ns     261ns  1.2170us  cuDeviceGet
+                    0.00%  2.0910us         3     697ns     385ns  1.2610us  cuDeviceGetCount
+                    0.00%     816ns         2     408ns     331ns     485ns  cuDeviceGetUuid
+                    0.00%     503ns         1     503ns     503ns     503ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25773== NVPROF is profiling process 25773, command: ./a.out 128 8192
+==25773== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25773== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+791.744080
+==25773== Profiling application: ./a.out 128 8192
+==25773== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   46.89%  371.88ms         1  371.88ms  371.88ms  371.88ms  [CUDA memcpy DtoH]
+                   25.12%  199.21ms         1  199.21ms  199.21ms  199.21ms  convolutionColumnGPU(double*, double*, int)
+                   15.19%  120.47ms         1  120.47ms  120.47ms  120.47ms  convolutionRowGPU(double*, double*, int, int)
+                   12.41%  98.425ms         2  49.213ms  1.5680us  98.424ms  [CUDA memcpy HtoD]
+                    0.39%  3.0717ms         1  3.0717ms  3.0717ms  3.0717ms  [CUDA memset]
+      API calls:   66.50%  791.42ms         2  395.71ms  98.584ms  692.83ms  cudaMemcpy
+                   17.39%  206.96ms         3  68.988ms  1.3426ms  204.21ms  cudaMalloc
+                    8.14%  96.879ms         1  96.879ms  96.879ms  96.879ms  cudaDeviceReset
+                    7.75%  92.221ms         3  30.740ms  980.09us  47.005ms  cudaFree
+                    0.08%  930.76us         2  465.38us  464.42us  466.34us  cuDeviceTotalMem
+                    0.04%  532.25us       202  2.6340us     149ns  116.18us  cuDeviceGetAttribute
+                    0.03%  370.41us         1  370.41us  370.41us  370.41us  cudaGetDeviceProperties
+                    0.02%  229.21us         1  229.21us  229.21us  229.21us  cudaMemset
+                    0.02%  203.49us         1  203.49us  203.49us  203.49us  cudaMemcpyToSymbol
+                    0.01%  97.273us         2  48.636us  13.088us  84.185us  cudaLaunchKernel
+                    0.01%  88.312us         2  44.156us  1.3280us  86.984us  cudaEventCreate
+                    0.00%  55.327us         2  27.663us  24.791us  30.536us  cuDeviceGetName
+                    0.00%  26.156us         2  13.078us  8.5350us  17.621us  cudaEventRecord
+                    0.00%  14.668us         2  7.3340us  1.7910us  12.877us  cuDeviceGetPCIBusId
+                    0.00%  11.697us         1  11.697us  11.697us  11.697us  cudaEventSynchronize
+                    0.00%  8.8780us         4  2.2190us     224ns  7.3840us  cuDeviceGet
+                    0.00%  4.1160us         1  4.1160us  4.1160us  4.1160us  cudaEventElapsedTime
+                    0.00%  1.7090us         3     569ns     222ns     971ns  cuDeviceGetCount
+                    0.00%     508ns         2     254ns     220ns     288ns  cuDeviceGetUuid
+                    0.00%     320ns         1     320ns     320ns     320ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25792== NVPROF is profiling process 25792, command: ./a.out 128 8192
+==25792== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25792== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+816.883362
+==25792== Profiling application: ./a.out 128 8192
+==25792== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   48.11%  393.64ms         1  393.64ms  393.64ms  393.64ms  [CUDA memcpy DtoH]
+                   24.36%  199.28ms         1  199.28ms  199.28ms  199.28ms  convolutionColumnGPU(double*, double*, int)
+                   14.73%  120.48ms         1  120.48ms  120.48ms  120.48ms  convolutionRowGPU(double*, double*, int, int)
+                   12.43%  101.68ms         2  50.840ms  1.6640us  101.68ms  [CUDA memcpy HtoD]
+                    0.38%  3.0708ms         1  3.0708ms  3.0708ms  3.0708ms  [CUDA memset]
+      API calls:   69.00%  816.54ms         2  408.27ms  101.79ms  714.75ms  cudaMemcpy
+                   17.35%  205.31ms         3  68.436ms  1.3428ms  202.51ms  cudaMalloc
+                    7.79%  92.221ms         3  30.740ms  980.59us  47.005ms  cudaFree
+                    5.59%  66.202ms         1  66.202ms  66.202ms  66.202ms  cudaDeviceReset
+                    0.11%  1.3291ms         2  664.54us  659.19us  669.90us  cuDeviceTotalMem
+                    0.06%  691.34us       202  3.4220us     217ns  156.27us  cuDeviceGetAttribute
+                    0.03%  412.48us         1  412.48us  412.48us  412.48us  cudaGetDeviceProperties
+                    0.02%  216.21us         1  216.21us  216.21us  216.21us  cudaMemcpyToSymbol
+                    0.02%  195.04us         1  195.04us  195.04us  195.04us  cudaMemset
+                    0.01%  100.15us         2  50.076us  13.510us  86.642us  cudaLaunchKernel
+                    0.01%  91.242us         2  45.621us  19.742us  71.500us  cudaEventCreate
+                    0.01%  70.593us         2  35.296us  30.566us  40.027us  cuDeviceGetName
+                    0.00%  39.805us         2  19.902us  7.6430us  32.162us  cudaEventRecord
+                    0.00%  17.913us         2  8.9560us  3.4140us  14.499us  cuDeviceGetPCIBusId
+                    0.00%  12.096us         1  12.096us  12.096us  12.096us  cudaEventSynchronize
+                    0.00%  4.6960us         1  4.6960us  4.6960us  4.6960us  cudaEventElapsedTime
+                    0.00%  2.2750us         4     568ns     332ns  1.0510us  cuDeviceGet
+                    0.00%  2.2080us         3     736ns     295ns  1.3390us  cuDeviceGetCount
+                    0.00%     785ns         2     392ns     375ns     410ns  cuDeviceGetUuid
+                    0.00%     475ns         1     475ns     475ns     475ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25811== NVPROF is profiling process 25811, command: ./a.out 128 8192
+==25811== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25811== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+878.163208
+==25811== Profiling application: ./a.out 128 8192
+==25811== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   41.93%  369.05ms         1  369.05ms  369.05ms  369.05ms  [CUDA memcpy DtoH]
+                   27.32%  240.44ms         1  240.44ms  240.44ms  240.44ms  convolutionColumnGPU(double*, double*, int)
+                   19.13%  168.32ms         1  168.32ms  168.32ms  168.32ms  convolutionRowGPU(double*, double*, int, int)
+                   11.21%  98.639ms         2  49.320ms  1.9520us  98.637ms  [CUDA memcpy HtoD]
+                    0.41%  3.6162ms         1  3.6162ms  3.6162ms  3.6162ms  [CUDA memset]
+      API calls:   67.17%  877.83ms         2  438.91ms  98.741ms  779.09ms  cudaMemcpy
+                   15.88%  207.58ms         3  69.194ms  1.3139ms  204.88ms  cudaMalloc
+                    8.72%  113.90ms         1  113.90ms  113.90ms  113.90ms  cudaDeviceReset
+                    7.98%  104.26ms         3  34.752ms  934.51us  53.167ms  cudaFree
+                    0.12%  1.5207ms         2  760.37us  759.46us  761.27us  cuDeviceTotalMem
+                    0.06%  738.39us       202  3.6550us     249ns  167.95us  cuDeviceGetAttribute
+                    0.03%  344.04us         1  344.04us  344.04us  344.04us  cudaGetDeviceProperties
+                    0.02%  207.91us         1  207.91us  207.91us  207.91us  cudaMemcpyToSymbol
+                    0.01%  177.31us         1  177.31us  177.31us  177.31us  cudaMemset
+                    0.01%  101.91us         2  50.955us  13.017us  88.894us  cudaLaunchKernel
+                    0.01%  77.167us         2  38.583us  32.814us  44.353us  cuDeviceGetName
+                    0.00%  49.913us         2  24.956us  1.2640us  48.649us  cudaEventCreate
+                    0.00%  26.968us         2  13.484us  8.0400us  18.928us  cudaEventRecord
+                    0.00%  16.059us         2  8.0290us  2.6610us  13.398us  cuDeviceGetPCIBusId
+                    0.00%  12.149us         4  3.0370us     264ns  10.648us  cuDeviceGet
+                    0.00%  7.9770us         1  7.9770us  7.9770us  7.9770us  cudaEventSynchronize
+                    0.00%  5.1130us         1  5.1130us  5.1130us  5.1130us  cudaEventElapsedTime
+                    0.00%  2.6430us         3     881ns     411ns  1.6600us  cuDeviceGetCount
+                    0.00%  1.2140us         2     607ns     540ns     674ns  cuDeviceGetUuid
+                    0.00%     838ns         1     838ns     838ns     838ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25830== NVPROF is profiling process 25830, command: ./a.out 128 8192
+==25830== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25830== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+818.453247
+==25830== Profiling application: ./a.out 128 8192
+==25830== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   47.91%  392.77ms         1  392.77ms  392.77ms  392.77ms  [CUDA memcpy DtoH]
+                   24.30%  199.18ms         1  199.18ms  199.18ms  199.18ms  convolutionColumnGPU(double*, double*, int)
+                   15.05%  123.33ms         1  123.33ms  123.33ms  123.33ms  convolutionRowGPU(double*, double*, int, int)
+                   12.37%  101.38ms         2  50.688ms  1.6640us  101.37ms  [CUDA memcpy HtoD]
+                    0.37%  3.0720ms         1  3.0720ms  3.0720ms  3.0720ms  [CUDA memset]
+      API calls:   66.84%  818.09ms         2  409.05ms  101.46ms  716.63ms  cudaMemcpy
+                   17.18%  210.24ms         3  70.080ms  1.3488ms  207.45ms  cudaMalloc
+                    8.08%  98.938ms         1  98.938ms  98.938ms  98.938ms  cudaDeviceReset
+                    7.53%  92.198ms         3  30.733ms  956.40us  47.005ms  cudaFree
+                    0.19%  2.3260ms         2  1.1630ms  1.1610ms  1.1650ms  cuDeviceTotalMem
+                    0.08%  941.32us       202  4.6600us     287ns  210.16us  cuDeviceGetAttribute
+                    0.04%  432.87us         1  432.87us  432.87us  432.87us  cudaGetDeviceProperties
+                    0.02%  224.11us         1  224.11us  224.11us  224.11us  cudaMemcpyToSymbol
+                    0.02%  185.66us         1  185.66us  185.66us  185.66us  cudaMemset
+                    0.01%  113.11us         2  56.554us  12.863us  100.25us  cudaLaunchKernel
+                    0.01%  104.38us         2  52.187us  42.664us  61.711us  cuDeviceGetName
+                    0.01%  74.352us         2  37.176us  1.9030us  72.449us  cudaEventCreate
+                    0.00%  33.444us         2  16.722us  7.9080us  25.536us  cudaEventRecord
+                    0.00%  17.348us         2  8.6740us  3.4050us  13.943us  cuDeviceGetPCIBusId
+                    0.00%  13.840us         1  13.840us  13.840us  13.840us  cudaEventSynchronize
+                    0.00%  4.6280us         3  1.5420us     373ns  2.8470us  cuDeviceGetCount
+                    0.00%  4.5760us         1  4.5760us  4.5760us  4.5760us  cudaEventElapsedTime
+                    0.00%  3.2120us         4     803ns     497ns  1.0840us  cuDeviceGet
+                    0.00%  1.6000us         2     800ns     660ns     940ns  cuDeviceGetUuid
+                    0.00%     443ns         1     443ns     443ns     443ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25850== NVPROF is profiling process 25850, command: ./a.out 128 8192
+==25850== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25850== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+790.170593
+==25850== Profiling application: ./a.out 128 8192
+==25850== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   46.99%  371.92ms         1  371.92ms  371.92ms  371.92ms  [CUDA memcpy DtoH]
+                   25.16%  199.14ms         1  199.14ms  199.14ms  199.14ms  convolutionColumnGPU(double*, double*, int)
+                   15.23%  120.56ms         1  120.56ms  120.56ms  120.56ms  convolutionRowGPU(double*, double*, int, int)
+                   12.23%  96.845ms         2  48.422ms  1.5680us  96.843ms  [CUDA memcpy HtoD]
+                    0.39%  3.0728ms         1  3.0728ms  3.0728ms  3.0728ms  [CUDA memset]
+      API calls:   66.10%  789.85ms         2  394.92ms  96.953ms  692.90ms  cudaMemcpy
+                   17.91%  214.00ms         3  71.332ms  1.3001ms  211.31ms  cudaMalloc
+                    8.03%  95.948ms         1  95.948ms  95.948ms  95.948ms  cudaDeviceReset
+                    7.72%  92.198ms         3  30.733ms  957.16us  46.995ms  cudaFree
+                    0.11%  1.3274ms         2  663.68us  661.33us  666.04us  cuDeviceTotalMem
+                    0.06%  670.01us       202  3.3160us     212ns  154.98us  cuDeviceGetAttribute
+                    0.03%  346.69us         1  346.69us  346.69us  346.69us  cudaGetDeviceProperties
+                    0.02%  201.38us         1  201.38us  201.38us  201.38us  cudaMemcpyToSymbol
+                    0.02%  186.45us         1  186.45us  186.45us  186.45us  cudaMemset
+                    0.01%  96.093us         2  48.046us  11.192us  84.901us  cudaLaunchKernel
+                    0.01%  64.070us         2  32.035us  28.978us  35.092us  cuDeviceGetName
+                    0.00%  51.482us         2  25.741us  1.3840us  50.098us  cudaEventCreate
+                    0.00%  27.316us         2  13.658us  7.8510us  19.465us  cudaEventRecord
+                    0.00%  16.652us         2  8.3260us  4.2420us  12.410us  cuDeviceGetPCIBusId
+                    0.00%  10.724us         4  2.6810us     270ns  9.4510us  cuDeviceGet
+                    0.00%  5.9360us         1  5.9360us  5.9360us  5.9360us  cudaEventSynchronize
+                    0.00%  4.2190us         1  4.2190us  4.2190us  4.2190us  cudaEventElapsedTime
+                    0.00%  3.4130us         3  1.1370us     537ns  2.2800us  cuDeviceGetCount
+                    0.00%     786ns         2     393ns     347ns     439ns  cuDeviceGetUuid
+                    0.00%     466ns         1     466ns     466ns     466ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25869== NVPROF is profiling process 25869, command: ./a.out 128 8192
+==25869== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25869== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+817.108276
+==25869== Profiling application: ./a.out 128 8192
+==25869== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   48.09%  393.52ms         1  393.52ms  393.52ms  393.52ms  [CUDA memcpy DtoH]
+                   24.35%  199.26ms         1  199.26ms  199.26ms  199.26ms  convolutionColumnGPU(double*, double*, int)
+                   14.73%  120.58ms         1  120.58ms  120.58ms  120.58ms  convolutionRowGPU(double*, double*, int, int)
+                   12.45%  101.91ms         2  50.955ms  1.6320us  101.91ms  [CUDA memcpy HtoD]
+                    0.38%  3.0711ms         1  3.0711ms  3.0711ms  3.0711ms  [CUDA memset]
+      API calls:   67.27%  816.76ms         2  408.38ms  102.03ms  714.73ms  cudaMemcpy
+                   17.02%  206.61ms         3  68.870ms  1.3356ms  203.85ms  cudaMalloc
+                    7.85%  95.288ms         1  95.288ms  95.288ms  95.288ms  cudaDeviceReset
+                    7.59%  92.201ms         3  30.734ms  964.62us  47.005ms  cudaFree
+                    0.12%  1.4995ms         2  749.75us  652.03us  847.48us  cuDeviceTotalMem
+                    0.06%  686.77us       202  3.3990us     217ns  153.38us  cuDeviceGetAttribute
+                    0.04%  426.52us         1  426.52us  426.52us  426.52us  cudaGetDeviceProperties
+                    0.02%  223.61us         1  223.61us  223.61us  223.61us  cudaMemcpyToSymbol
+                    0.02%  187.75us         1  187.75us  187.75us  187.75us  cudaMemset
+                    0.01%  101.49us         2  50.743us  11.996us  89.491us  cudaLaunchKernel
+                    0.01%  88.815us         2  44.407us  15.866us  72.949us  cudaEventCreate
+                    0.01%  69.629us         2  34.814us  29.728us  39.901us  cuDeviceGetName
+                    0.00%  29.317us         2  14.658us  7.1790us  22.138us  cudaEventRecord
+                    0.00%  13.605us         1  13.605us  13.605us  13.605us  cudaEventSynchronize
+                    0.00%  13.309us         2  6.6540us  3.5490us  9.7600us  cuDeviceGetPCIBusId
+                    0.00%  4.7980us         1  4.7980us  4.7980us  4.7980us  cudaEventElapsedTime
+                    0.00%  2.4610us         4     615ns     261ns  1.2400us  cuDeviceGet
+                    0.00%  2.2220us         3     740ns     384ns  1.3830us  cuDeviceGetCount
+                    0.00%     862ns         2     431ns     407ns     455ns  cuDeviceGetUuid
+                    0.00%     367ns         1     367ns     367ns     367ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25888== NVPROF is profiling process 25888, command: ./a.out 128 8192
+==25888== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25888== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+792.339966
+==25888== Profiling application: ./a.out 128 8192
+==25888== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   46.90%  372.27ms         1  372.27ms  372.27ms  372.27ms  [CUDA memcpy DtoH]
+                   25.10%  199.19ms         1  199.19ms  199.19ms  199.19ms  convolutionColumnGPU(double*, double*, int)
+                   15.19%  120.58ms         1  120.58ms  120.58ms  120.58ms  convolutionRowGPU(double*, double*, int, int)
+                   12.42%  98.583ms         2  49.291ms  1.5360us  98.581ms  [CUDA memcpy HtoD]
+                    0.39%  3.0692ms         1  3.0692ms  3.0692ms  3.0692ms  [CUDA memset]
+      API calls:   66.21%  792.01ms         2  396.01ms  98.690ms  693.32ms  cudaMemcpy
+                   17.68%  211.54ms         3  70.514ms  1.3291ms  208.81ms  cudaMalloc
+                    8.12%  97.084ms         1  97.084ms  97.084ms  97.084ms  cudaDeviceReset
+                    7.71%  92.184ms         3  30.728ms  937.59us  47.000ms  cudaFree
+                    0.14%  1.6539ms         2  826.96us  820.53us  833.39us  cuDeviceTotalMem
+                    0.06%  769.24us       202  3.8080us     265ns  172.03us  cuDeviceGetAttribute
+                    0.03%  342.10us         1  342.10us  342.10us  342.10us  cudaGetDeviceProperties
+                    0.02%  204.72us         1  204.72us  204.72us  204.72us  cudaMemcpyToSymbol
+                    0.02%  188.33us         1  188.33us  188.33us  188.33us  cudaMemset
+                    0.01%  94.708us         2  47.354us  11.211us  83.497us  cudaLaunchKernel
+                    0.01%  76.586us         2  38.293us  32.976us  43.610us  cuDeviceGetName
+                    0.00%  52.066us         2  26.033us  2.6840us  49.382us  cudaEventCreate
+                    0.00%  25.440us         2  12.720us  8.4090us  17.031us  cudaEventRecord
+                    0.00%  16.027us         2  8.0130us  3.0760us  12.951us  cuDeviceGetPCIBusId
+                    0.00%  7.7660us         1  7.7660us  7.7660us  7.7660us  cudaEventSynchronize
+                    0.00%  4.2930us         1  4.2930us  4.2930us  4.2930us  cudaEventElapsedTime
+                    0.00%  2.8340us         4     708ns     316ns  1.4090us  cuDeviceGet
+                    0.00%  2.3140us         3     771ns     354ns  1.3710us  cuDeviceGetCount
+                    0.00%  1.0130us         2     506ns     453ns     560ns  cuDeviceGetUuid
+                    0.00%     546ns         1     546ns     546ns     546ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25908== NVPROF is profiling process 25908, command: ./a.out 128 8192
+==25908== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25908== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+816.679810
+==25908== Profiling application: ./a.out 128 8192
+==25908== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   48.08%  393.28ms         1  393.28ms  393.28ms  393.28ms  [CUDA memcpy DtoH]
+                   24.35%  199.19ms         1  199.19ms  199.19ms  199.19ms  convolutionColumnGPU(double*, double*, int)
+                   14.74%  120.59ms         1  120.59ms  120.59ms  120.59ms  convolutionRowGPU(double*, double*, int, int)
+                   12.46%  101.89ms         2  50.946ms  1.7280us  101.89ms  [CUDA memcpy HtoD]
+                    0.38%  3.0752ms         1  3.0752ms  3.0752ms  3.0752ms  [CUDA memset]
+      API calls:   66.80%  816.32ms         2  408.16ms  101.93ms  714.39ms  cudaMemcpy
+                   17.21%  210.28ms         3  70.095ms  1.3518ms  207.50ms  cudaMalloc
+                    8.09%  98.878ms         1  98.878ms  98.878ms  98.878ms  cudaDeviceReset
+                    7.54%  92.143ms         3  30.714ms  914.89us  46.997ms  cudaFree
+                    0.19%  2.3126ms         2  1.1563ms  1.1540ms  1.1587ms  cuDeviceTotalMem
+                    0.07%  905.84us       202  4.4840us     295ns  194.65us  cuDeviceGetAttribute
+                    0.03%  397.69us         1  397.69us  397.69us  397.69us  cudaGetDeviceProperties
+                    0.02%  225.56us         1  225.56us  225.56us  225.56us  cudaMemcpyToSymbol
+                    0.01%  149.73us         1  149.73us  149.73us  149.73us  cudaMemset
+                    0.01%  112.02us         2  56.009us  40.991us  71.028us  cuDeviceGetName
+                    0.01%  109.75us         2  54.876us  12.316us  97.436us  cudaLaunchKernel
+                    0.01%  66.113us         2  33.056us  1.5030us  64.610us  cudaEventCreate
+                    0.00%  34.815us         2  17.407us  7.3540us  27.461us  cudaEventRecord
+                    0.00%  15.985us         2  7.9920us  2.5980us  13.387us  cuDeviceGetPCIBusId
+                    0.00%  6.9070us         1  6.9070us  6.9070us  6.9070us  cudaEventSynchronize
+                    0.00%  4.7820us         1  4.7820us  4.7820us  4.7820us  cudaEventElapsedTime
+                    0.00%  3.9340us         3  1.3110us     356ns  2.1670us  cuDeviceGetCount
+                    0.00%  3.0600us         4     765ns     527ns  1.1470us  cuDeviceGet
+                    0.00%  1.2070us         2     603ns     477ns     730ns  cuDeviceGetUuid
+                    0.00%     714ns         1     714ns     714ns     714ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25928== NVPROF is profiling process 25928, command: ./a.out 128 8192
+==25928== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25928== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+912.959534
+==25928== Profiling application: ./a.out 128 8192
+==25928== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   42.70%  390.63ms         1  390.63ms  390.63ms  390.63ms  [CUDA memcpy DtoH]
+                   26.92%  246.23ms         1  246.23ms  246.23ms  246.23ms  convolutionColumnGPU(double*, double*, int)
+                   18.85%  172.43ms         1  172.43ms  172.43ms  172.43ms  convolutionRowGPU(double*, double*, int, int)
+                   11.14%  101.91ms         2  50.955ms  2.0800us  101.91ms  [CUDA memcpy HtoD]
+                    0.40%  3.6172ms         1  3.6172ms  3.6172ms  3.6172ms  [CUDA memset]
+      API calls:   67.90%  912.62ms         2  456.31ms  101.98ms  810.64ms  cudaMemcpy
+                   16.01%  215.18ms         3  71.728ms  1.3434ms  212.39ms  cudaMalloc
+                    8.10%  108.89ms         1  108.89ms  108.89ms  108.89ms  cudaDeviceReset
+                    7.75%  104.23ms         3  34.744ms  937.17us  53.222ms  cudaFree
+                    0.10%  1.3529ms         2  676.43us  671.55us  681.31us  cuDeviceTotalMem
+                    0.05%  707.95us       202  3.5040us     213ns  162.63us  cuDeviceGetAttribute
+                    0.03%  379.90us         1  379.90us  379.90us  379.90us  cudaGetDeviceProperties
+                    0.02%  216.75us         1  216.75us  216.75us  216.75us  cudaMemcpyToSymbol
+                    0.01%  177.79us         1  177.79us  177.79us  177.79us  cudaMemset
+                    0.01%  102.05us         2  51.024us  11.342us  90.707us  cudaLaunchKernel
+                    0.01%  70.283us         2  35.141us  31.612us  38.671us  cuDeviceGetName
+                    0.00%  64.721us         2  32.360us  1.2770us  63.444us  cudaEventCreate
+                    0.00%  38.702us         2  19.351us  7.2720us  31.430us  cudaEventRecord
+                    0.00%  15.983us         2  7.9910us  4.4290us  11.554us  cuDeviceGetPCIBusId
+                    0.00%  12.370us         1  12.370us  12.370us  12.370us  cudaEventSynchronize
+                    0.00%  4.2700us         1  4.2700us  4.2700us  4.2700us  cudaEventElapsedTime
+                    0.00%  2.5300us         3     843ns     420ns  1.5560us  cuDeviceGetCount
+                    0.00%  2.1470us         4     536ns     289ns  1.0550us  cuDeviceGet
+                    0.00%     908ns         2     454ns     337ns     571ns  cuDeviceGetUuid
+                    0.00%     500ns         1     500ns     500ns     500ns  cudaPeekAtLastError
+ikoukoulis@csl-artemis:~/high_performance_computing/cuda_convolution$ nvprof ./a.out 128 8192
+Image Width x Height = 8192 x 8192
+
+Allocating and initializing host arrays...
+==25947== NVPROF is profiling process 25947, command: ./a.out 128 8192
+==25947== Warning: Auto boost enabled on device 0. Profiling results may be inconsistent.
+CPU computation...
+Col_tile_size:16
+==25947== Warning: Profiling results might be incorrect with current version of nvcc compiler used to compile cuda app. Compile with nvcc compiler 9.0 or later version to get correct profiling results. Ignore this warning if code is already compiled with the recommended nvcc version 
+817.298767
+==25947== Profiling application: ./a.out 128 8192
+==25947== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   48.05%  393.34ms         1  393.34ms  393.34ms  393.34ms  [CUDA memcpy DtoH]
+                   24.34%  199.21ms         1  199.21ms  199.21ms  199.21ms  convolutionColumnGPU(double*, double*, int)
+                   14.85%  121.55ms         1  121.55ms  121.55ms  121.55ms  convolutionRowGPU(double*, double*, int, int)
+                   12.39%  101.41ms         2  50.707ms  1.6640us  101.41ms  [CUDA memcpy HtoD]
+                    0.38%  3.0749ms         1  3.0749ms  3.0749ms  3.0749ms  [CUDA memset]
+      API calls:   67.32%  816.94ms         2  408.47ms  101.50ms  715.44ms  cudaMemcpy
+                   16.92%  205.31ms         3  68.438ms  1.3396ms  202.52ms  cudaMalloc
+                    7.89%  95.693ms         1  95.693ms  95.693ms  95.693ms  cudaDeviceReset
+                    7.60%  92.178ms         3  30.726ms  948.41us  46.997ms  cudaFree
+                    0.11%  1.3172ms         2  658.58us  653.43us  663.74us  cuDeviceTotalMem
+                    0.07%  882.62us       202  4.3690us     202ns  354.28us  cuDeviceGetAttribute
+                    0.04%  438.13us         1  438.13us  438.13us  438.13us  cudaGetDeviceProperties
+                    0.02%  220.54us         1  220.54us  220.54us  220.54us  cudaMemcpyToSymbol
+                    0.01%  180.36us         1  180.36us  180.36us  180.36us  cudaMemset
+                    0.01%  111.92us         2  55.961us  10.382us  101.54us  cudaLaunchKernel
+                    0.01%  87.050us         2  43.525us  15.942us  71.108us  cudaEventCreate
+                    0.01%  70.201us         2  35.100us  29.770us  40.431us  cuDeviceGetName
+                    0.00%  39.864us         2  19.932us  7.7260us  32.138us  cudaEventRecord
+                    0.00%  17.603us         2  8.8010us  3.1550us  14.448us  cuDeviceGetPCIBusId
+                    0.00%  12.505us         1  12.505us  12.505us  12.505us  cudaEventSynchronize
+                    0.00%  4.5150us         1  4.5150us  4.5150us  4.5150us  cudaEventElapsedTime
+                    0.00%  3.0380us         3  1.0120us     518ns  2.0000us  cuDeviceGetCount
+                    0.00%  2.5900us         4     647ns     272ns  1.1560us  cuDeviceGet
+                    0.00%     857ns         2     428ns     394ns     463ns  cuDeviceGetUuid
+                    0.00%     363ns         1     363ns     363ns     363ns  cudaPeekAtLastError
+

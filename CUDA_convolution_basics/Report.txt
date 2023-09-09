@@ -1,0 +1,112 @@
+Q.3) 
+
+a) The max supported image size is 32x32 because the maximum number of threads 
+per block is 1024 as seen in the deviceQueryArtemis.txt
+
+b) In our code we calculated the absolute error of each element between the cpu 
+and gpu results and we kept the max value that was observed. Therefore the max 
+accuracy that we set as a parameter for the accuracy comparisons has to be a
+number greater than this value in order for the comparison to succeed. 
+
+On a 32x32 array the max observed error increases as we increase the filter
+radius. For filter_radius = 1 our results are accurate within 2 decimals
+(the max observed error was 0.007812) for filter_radius = 2 within 1 decimal 
+(max observed error 0.015625) and for filter_radius = 4 , 8 within 0
+decimals (max observed errors 0.187500 0.750000 respectively). 
+
+Q.4)
+
+Our code now can theoretically support any size of array, but we are bound by 
+the memory capacity of gpu (and cpu for the code running on cpu) and the max 
+dimension size of a grid size limit as shown from the deviceQuery. For example 
+on mars with only 2000 MBytes of capacity we cannot execute our code for a 
+16384*16384 array as we allocate 3 arrays(one for the input, one for the buffer 
+and one for the output) with these dimensions which are in 
+total 16384^2*4*3 = 3.221.225.472 bytes which is greater than the capacity of 
+gpu.
+
+Mars (for a single device) has a capacity of 2097086464 bytes. Therefore for
+mars the maximum array that could be supported could have in total 
+(2097086464/4)/2 =~ 174.757.205 (without taking in count that we must also 
+allocate memory for the filter in the gpu)elements or in our case with 
+dimensions that must be a power of two (and be a square matrix) 8192x8192 is the
+max we can support on mars where we allocate 8192^2*4*3 = 805.306.368 bytes.
+
+With artemis where the total amount of global memory is 11441 MBytes 
+(11.996.954.624 bytes) the max supported array (square matrix with power 
+of two dimensions) is 16384*16384 where in total we allocate 3.221.225.472 bytes
+as we calculated previously. We cannot support a 32768*32768 array as this array
+requires 32768^2*4*3 =~ 1,28*10^10 bytes which is greater that the amount of
+global memory in the gpu.
+
+Q.5)
+
+a) On a 16384x16384 array with filter_radius = {1,2,4,8,16,32,64,128,256} we 
+similarly observe that as we increase the filter_radius the max observed error
+increases starting from the 3rd decimal for radius = 1 (therefore we are 
+accurate for 2 decimals) and for radius=4 and going onthere is error in all 
+decimals (and therefore accuracy of 0 decimals) as we observe in the excel 
+spreedsheet. This is probably the result of 2 factors. 
+
+First, the initial values of the array are relatively big floating point numbers 
+(the range is from 0 to 255) and as we do multiplications and additions with 
+these numbers the results are far from 0 where the floating point standard has 
+sparse representations. 
+
+Second, cuda by default uses fused-multiply-add which skips the intermidiate
+rounding step between the multiplication and addition and instead uses the more 
+accurate internal represantion to do the multiplication after the addition 
+resulting in better accuracy. The cpu seems that by default does not use 
+fused-multiply-add as when we disable this from the gpu (using either -g -G 
+flags or fmad=false) the results between the gpu and cpu are identical. 
+
+Under these circumstances the results from the gpu could be more accurate than
+those of the cpu due to the use of fused-multiply-add. The order of the
+operations in gpu is different from the standard order that the sequential code 
+follows due to parallelism and this could also affect our results. 
+
+It is obvious then that due to the 2 reasons mentioned above as the filter
+radius increases, the number of operations also increases leading to even bigger
+numbers which are further from 0 and thus can be represented less acurrately by
+the floating point standard. The use of fused-multiply-add by the gpu amplifies this
+difference as the gpu does less roundings, while the cpu, which probably doesn't
+use fma, does even more roundings. 
+
+6) With double precision we observed slightly longer execution times for the 
+code both in cpu and gpu. As for the accuracy of the results compared to the cpu
+we get much better results than with floats due to the higher precision of 
+doubles. Now the max observed error ranges from the 11th decimal to the 6th as 
+seen in the excel spreadsheet (and therefore our max accuracy ranges from the 
+10th to the 5th decimal). 
+
+Q.7)
+
+a) For the convolutionRowKernel the number of times that each element of the 
+array is read is :
+	( 2*filterR+1) * imageH * imageW - 2 * imageH * (1+2+3+...+filterR)
+
+which is the same for convolutionColumnKernel (with imageH=imageW) therefore 
+both of these kernels additively do:
+
+2 * ( ( 2*filterR+1) * imageH * imageW - 2 * imageH * (1+2+3+...+filterR))
+
+reads from the array.
+
+The same formula calculates the number of times each element of the filter is 
+read as for every access in the filter we do one access in the image array.
+
+b) Inside each kernel in each iteration of the for loop we do 2 
+floating operations one multiplication and one addition, and 2 global 
+memory accesses when we access an index of the image and an index of the 
+filter therefore the ratio global 
+	(memory accesses)/(floating point operations) = 2/2 = 1/1.
+
+Q.8) Between the results from the gpu code with padding and the gpu code 
+without padding we observe slight differences in execution times. For array 
+lengths from 64 to 2048 we observe slightly higher excution times on the code 
+with padding but only barely. From array sizes of 4096 to 16384 we observe 
+faster execution times on the gpu code with the gain in performance which seems 
+to scale as the size of the array gets bigger. This happens probably because 
+more warps are likely to be affected from divergence as the size of the array
+increases in the code without padding, so the code with padding gets more
+beneficial as the array increases in size.
